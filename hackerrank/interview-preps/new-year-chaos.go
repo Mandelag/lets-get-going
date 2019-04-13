@@ -1,8 +1,81 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
+)
 
-// https://www.hackerrank.com/challenges/new-year-chaos/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays
+func minimumBribes(q []int32) {
+	fmt.Println(minimumBribesAlgo(q))
+}
+
+// Complete the minimumBribes function below.
+func minimumBribesAlgo(q []int32) string {
+	var a, b, c int = 1, 2, 3
+	var initialNextIndexes = []*int{&a, &b, &c}
+	var possibleNextIndexes = pic(initialNextIndexes)
+
+	var totalBribes = 0
+	for i, v := range q {
+		// fmt.Println(v)
+		bribes := possibleNextIndexes.findAndRemove(int(v))
+		if bribes < 0 { // index not found
+			return "Too chaotic"
+		}
+		// fmt.Println(bribes)
+		totalBribes += bribes
+		insertNew := i + 1 + 3
+		possibleNextIndexes.insert(&insertNew)
+	}
+	var v = strconv.Itoa(totalBribes)
+	return v
+}
+
+func main() {
+	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
+
+	tTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
+	checkError(err)
+	t := int32(tTemp)
+
+	for tItr := 0; tItr < int(t); tItr++ {
+		nTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
+		checkError(err)
+		n := int32(nTemp)
+
+		qTemp := strings.Split(readLine(reader), " ")
+
+		var q []int32
+
+		for i := 0; i < int(n); i++ {
+			qItemTemp, err := strconv.ParseInt(qTemp[i], 10, 64)
+			checkError(err)
+			qItem := int32(qItemTemp)
+			q = append(q, qItem)
+		}
+
+		minimumBribes(q)
+	}
+}
+
+func readLine(reader *bufio.Reader) string {
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
+
+	return strings.TrimRight(string(str), "\r\n")
+}
+
+func checkError(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
 
 /**
  * container for possible index value
@@ -14,7 +87,7 @@ type pic []*int
  */
 func (p pic) insert(value *int) (index int) {
 	result := -1
-	for i := len(p) - 1; i >= 0; i-- { // insert from right (tail) until it finds non-nil value
+	for i := len(p) - 1; i >= 0; i-- { // insert from right (tail) until it finds..
 		if p[i] != nil {
 			break
 		}
@@ -52,38 +125,4 @@ func (p pic) findAndRemove(value int) (index int) {
 		}
 	}
 	return result
-}
-
-func main() {
-	var a, b, c int = 1, 2, 3
-	// fmt.Println(a, b, c)
-	var initialNextIndexes = []*int{&a, &b, &c}
-	// fmt.Println(initialNextIndexes)
-	var chaoticQueue = []int{2, 1, 5, 4, 3}
-	var possibleNextIndexes = pic(initialNextIndexes)
-
-	// fmt.Println(possibleNextIndexes)
-	// for i := 0; i < len(possibleNextIndexes); i++ {
-	// 	if possibleNextIndexes[i] != nil {
-	// 		fmt.Print(" ", *possibleNextIndexes[i])
-	// 	} else {
-	// 		fmt.Print(" ", "-")
-	// 	}
-	// }
-	// fmt.Println()
-	var totalBribes = 0
-	for i, v := range chaoticQueue {
-		// fmt.Println(v)
-		bribes := possibleNextIndexes.findAndRemove(v)
-		if bribes < 0 { // index not found
-			fmt.Println("Too chaotic!")
-			break
-		}
-		fmt.Println(bribes)
-		totalBribes += bribes
-		insertNew := i + 1 + 3
-		possibleNextIndexes.insert(&insertNew)
-	}
-	fmt.Println("Total:", totalBribes)
-
 }
