@@ -23,19 +23,19 @@ func minimumBribesAlgo(q []int32) string {
 	*initialNextIndexes[1] = 2
 	*initialNextIndexes[0] = 1
 
-	var possibleNextIndexes = stacko(initialNextIndexes)
+	var possibleNextIndexes = Stacko(initialNextIndexes)
 
 	var totalBribes = 0
 	for i, v := range q {
 		// fmt.Println(v)
-		bribes := possibleNextIndexes.findAndPull(int(v))
+		bribes := possibleNextIndexes.FindAndPull(int(v))
 		if bribes < 0 { // index not found
 			return "Too chaotic"
 		}
 		// fmt.Println(bribes)
 		totalBribes += bribes
 		insertNew := i + 1 + 3
-		possibleNextIndexes.insert(&insertNew)
+		possibleNextIndexes.Insert(&insertNew)
 	}
 	var v = strconv.Itoa(totalBribes)
 	return v
