@@ -4,9 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"os"
 	"strconv"
 	"strings"
-	"os"
 )
 
 func minimumBribes(q []int32) {
@@ -15,20 +15,20 @@ func minimumBribes(q []int32) {
 
 // Complete the minimumBribes function below.
 func minimumBribesAlgo(q []int32) string {
-	
-	var initialNextIndexes = []*int{new(int), new(int),new(int)}
+
+	var initialNextIndexes = []*int{new(int), new(int), new(int)}
 	// set next index of the first element
 	// * operator is to access the value pointed by pointer
 	*initialNextIndexes[2] = 3
 	*initialNextIndexes[1] = 2
 	*initialNextIndexes[0] = 1
 
-	var possibleNextIndexes = pic(initialNextIndexes)
+	var possibleNextIndexes = stacko(initialNextIndexes)
 
 	var totalBribes = 0
 	for i, v := range q {
 		// fmt.Println(v)
-		bribes := possibleNextIndexes.findAndRemove(int(v))
+		bribes := possibleNextIndexes.findAndPull(int(v))
 		if bribes < 0 { // index not found
 			return "Too chaotic"
 		}
@@ -81,54 +81,4 @@ func checkError(err error) {
 	if err != nil {
 		panic(err)
 	}
-}
-
-/**
- * container for possible index value
- */
-type pic []*int
-
-/**
- * Insert from the tail, return index placed
- */
-func (p pic) insert(value *int) (index int) {
-	result := -1
-	for i := len(p) - 1; i >= 0; i-- { // insert from right (tail) until it finds..
-		if p[i] != nil {
-			break
-		}
-		result = i
-	}
-	p[result] = value
-	return result
-}
-
-/**
- * Remove index, reorder, return value removed.
- */
-func (p pic) remove(index int) (value *int) {
-	result := p[index]
-	for i := index; i < len(p); i++ { // remove and shift all to left
-		if i+1 >= len(p) {
-			p[i] = nil
-		} else {
-			p[i] = p[i+1]
-		}
-	}
-	return result
-}
-
-/**
- * Find value, return its index, delete, and reorder.
- */
-func (p pic) findAndRemove(value int) (index int) {
-	result := -1
-	for i := 0; i < len(p); i++ {
-		if p[i] != nil && *p[i] == value {
-			p.remove(i)
-			result = i
-			break
-		}
-	}
-	return result
 }
