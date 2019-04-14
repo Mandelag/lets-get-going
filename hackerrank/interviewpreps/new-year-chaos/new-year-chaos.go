@@ -14,8 +14,14 @@ func minimumBribes(q []int32) {
 
 // Complete the minimumBribes function below.
 func minimumBribesAlgo(q []int32) string {
-	var a, b, c int = 1, 2, 3
-	var initialNextIndexes = []*int{&a, &b, &c}
+	
+	var initialNextIndexes = []*int{new(int), new(int),new(int)}
+	// set next index of the first element
+	// * operator is to access the value pointed by pointer
+	*initialNextIndexes[2] = 3
+	*initialNextIndexes[1] = 2
+	*initialNextIndexes[0] = 1
+
 	var possibleNextIndexes = pic(initialNextIndexes)
 
 	var totalBribes = 0
