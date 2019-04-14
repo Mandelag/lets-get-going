@@ -6,6 +6,7 @@ import (
 	"io"
 	"strconv"
 	"strings"
+	"os"
 )
 
 func minimumBribes(q []int32) {
@@ -40,32 +41,32 @@ func minimumBribesAlgo(q []int32) string {
 	return v
 }
 
-// func main() {
-// 	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
+func main() {
+	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
 
-// 	tTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
-// 	checkError(err)
-// 	t := int32(tTemp)
+	tTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
+	checkError(err)
+	t := int32(tTemp)
 
-// 	for tItr := 0; tItr < int(t); tItr++ {
-// 		nTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
-// 		checkError(err)
-// 		n := int32(nTemp)
+	for tItr := 0; tItr < int(t); tItr++ {
+		nTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
+		checkError(err)
+		n := int32(nTemp)
 
-// 		qTemp := strings.Split(readLine(reader), " ")
+		qTemp := strings.Split(readLine(reader), " ")
 
-// 		var q []int32
+		var q []int32
 
-// 		for i := 0; i < int(n); i++ {
-// 			qItemTemp, err := strconv.ParseInt(qTemp[i], 10, 64)
-// 			checkError(err)
-// 			qItem := int32(qItemTemp)
-// 			q = append(q, qItem)
-// 		}
+		for i := 0; i < int(n); i++ {
+			qItemTemp, err := strconv.ParseInt(qTemp[i], 10, 64)
+			checkError(err)
+			qItem := int32(qItemTemp)
+			q = append(q, qItem)
+		}
 
-// 		minimumBribes(q)
-// 	}
-// }
+		minimumBribes(q)
+	}
+}
 
 func readLine(reader *bufio.Reader) string {
 	str, _, err := reader.ReadLine()
