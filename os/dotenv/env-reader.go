@@ -16,7 +16,7 @@ func LoadEnv(envFile string) error {
 	file, err := os.Open(envFile)
 	defer file.Close()
 
-	env := make([]byte, 1024)
+	env := make([]byte, 0, 128)
 	buf := make([]byte, 512)
 	rcount := 1024
 	for rcount > 0 {
