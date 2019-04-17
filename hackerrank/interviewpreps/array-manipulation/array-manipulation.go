@@ -25,7 +25,9 @@ func arrayManipulation(n int32, queries [][]int32) int64 {
 		var k = query[2]
 
 		sums[a] += k
-		sums[b] -= k
+		if b + 1 < int32(len(sums)) {
+			sums[b + 1] -= k
+		}
 	}
 
 	var accumulate int64
