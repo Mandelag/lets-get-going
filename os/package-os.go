@@ -15,7 +15,7 @@ func write() {
 	fmt.Println(in)
 	file, _ := os.Create("write.txt")
 	file.Write([]byte(in))
-	file.WriteAt([]byte("And offset!"), int64(len(in)))
+	file.WriteAt([]byte("And offset!"), int64(len(in)+100))
 	file.Close()
 }
 
