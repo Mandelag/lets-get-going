@@ -15,8 +15,32 @@ func main() {
 	fmt.Println(arrayManipulation(5, input))
 }
 
-// Complete the arrayManipulation function below.
+// calculate the sum while iterating over the result
 func arrayManipulation(n int32, queries [][]int32) int64 {
+	var max int64
+	sums := make([]int32, n)
+	for _, query := range queries {
+		var a = query[0] - 1
+		var b = query[1] - 1
+		var k = query[2]
+
+		sums[a] += k
+		sums[b] -= k
+	}
+
+	var accumulate int64
+	for _, sum := range sums {
+		accumulate += int64(sum)
+		if accumulate > max {
+			max = accumulate
+		}
+	}
+
+	return max
+}
+
+// Complete the arrayManipulation function below.
+func oldArrayManipulation(n int32, queries [][]int32) int64 {
 	// var result int64
 
 	var movingAverages = make([]float64, n) // make splice of size n
